@@ -405,8 +405,6 @@ Multi-GPU projects cannot be persisted. SymetryML allows the Multi-GPU project t
 *float* or *double*. Use of doubles is recommended as they offer higher levels of precision. However,
 the extra precision does come with a greater memory footprint.
 
-TODO : use mgpud vs mgpuf images here
-
 image::media/web/webUI_selectNumberOfGPU.png[title='Select Number of GPU', width=50.0%]
 
 [[partition]]
@@ -781,15 +779,14 @@ The anomaly models available in Symetry are:
 * Histogram Based Anomaly - HBA (requires a histogram enabled project)
 
 ===== Anomaly Plot
-TODO: Anomaly Plot
 
 Anomaly Plot functionality allows you to visualize the prediction of your anomaly models in a graph.
 
 This can be performed by right clicking on the anomaly model and selecting
-*Predict Live*
-image::media/web/live_predict_0.png[title='Anomaly - Plot', width=50%]
+*Anomaly Plot*
+image::media/web/anomaly_plot_0.png[title='Anomaly - Plot', width=50%]
 
-image::media/web/live_predict_1.png[title='Anomaly - Plot Prediction Result', width=50%]
+image::media/web/anomaly_plot_1.png[title='Anomaly - Plot Prediction Result', width=50%]
 
 ===== Live Predict
 TODO: Live Predict
@@ -1342,6 +1339,11 @@ image::media/web/km1.png[title='KM Build Model', width=50%]
 3. Clicking *Build Model* button.
 
 
+[[cluster-projects]]
+===== Clustering
+
+TODO Clustering
+
 [[creating-new-fed-projects]]
 ==== Federated Projects
 
@@ -1371,8 +1373,6 @@ image::media/web/create_fusion_1.png[title='Type Selection', width=25%]
 image::media/web/create_fusion_3.png[title='Fusion Cells', width=50%]
 7. Finally, click "Create" to complete the process.
 
-TODO: swap fusion
-
 Should you need to edit the information in your Fusion project, you can simply
 right click on the *Fusion* node and click *Fusion Info*
 
@@ -1387,7 +1387,6 @@ image::media/web/update_fusion_2.png[title='Update Fusion', width=50%]
 [[creating-new-automl]]
 ==== AutoML
 
-TODO: AutoML
 New in symetry 5.4 is the ability to simplify project creation with
 AutoML.
 
@@ -1596,8 +1595,6 @@ information about your new model.
 [[model-advance-features]]
 ==== Advanced Model Options
 
-TODO: Model Advanced Options
-
 Most of the SML models allow for model specific options to be enabled before building. One example of such option is the *psuedo matrix inverse*. With *pseudo inverse* enabled, a linear model, which would typically not be build due to matrix non invertability, can be created by the user. However, such model is likely to be unstable and therefore this option should only be used by advanced users.
 
 image::media/web/advanced_model_features_0.png[title='Model - Advanced Options', width=50%]
@@ -1770,7 +1767,6 @@ image::media/web/prediction_export.png[title='Prediction Export', width=100%]
 
 [[symetry-web-configurations]]
 ==== Symetry Web Configurations
-TODO: symetry-rest.txt
 
 Certain Symetry Web parameters can be configured by editing the `/opt/symetry/symetry-web.txt` configuration file. Ensure that `-Drtlm.web.db=/opt/symetry/symetry-web.txt` is set in `/opt/jetty/start.ini`.
 

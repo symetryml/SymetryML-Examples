@@ -1,0 +1,274 @@
+
+[[tasks]]
+== Tasks API
+
+Task API allows to create tasks / process. For now
+it can only be used to create SymetryML Kafka stream
+application. For more information on SymetryML Kafka 
+stream application please consult: TBD
+
+
+[[task-create]]
+=== Task Create
+
+This API function creates a Task. Please see <<data-source-encryption>> for information on how to encrypt <<task-info-json>> data structures.
+
+[[task-create-url]]
+==== URL
+....
+POST /symetry/rest/{cid}/tasks/create [Body=TaskInfo (encrypted)]
+....
+[width="100%",cols="<25%,<25%,<50%",options="header",]
+|=================
+|Parameter |Required/Optional? |Description
+|*force* |Optional | if true then will override any pre-existing Task with same id. Default is *false*.
+|=================
+
+
+[[task-create-http-responses]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|=================
+|HTTP Status Code |HTTP Status Message |Description
+|202 |CREATED | Success.
+|409 |CONFLICT | A task with the specified name already exists and the `force` parameter was false.
+|=================
+
+
+
+
+[[task-start]]
+=== Task Start
+
+This rest endpoint start a task. 
+
+[[task-start-url]]
+==== URL
+....
+GET /symetry/rest/{cid}/tasks/{tid}/start
+....
+
+
+[[task-start-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 |OK |Success.
+|==================================================
+
+
+
+[[task-stop]]
+=== Stop a Start
+
+This rest endpoint stop a task. 
+
+[[task-stop-url]]
+==== URL
+....
+GET /symetry/rest/{cid}/tasks/{tid}/start
+....
+
+
+[[task-stop-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 | OK | Success.
+|==================================================
+
+
+
+[[task-list]]
+=== Task List
+
+This rest endpoint return a list of tasks that belong to a given project for a given user.
+
+[[task-list-url]]
+==== URL
+....
+GET /{cid}/tasks
+....
+[[task-list-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 | OK | Success.
+|==================================================
+
+[[task-list-entity]]
+==== HTTP Response Entity
+
+[width="100%", cols="<25%,<75%",options="header",]
+|===============
+|HTTP Response Entity |Description
+|<<stringlist-json>> | A list of task name.
+|===============
+
+
+
+
+[[task-delete]]
+=== Delete a Task
+Delete a task If the task is running it will first be stopped.
+
+[[task-delete-url]]
+==== URL
+....
+DELETE /symetry/rest/{cid}/tasks/{tid}
+....
+
+==== Canonical URL Parameters
+[width="100%", cols="<30%,<70%",options="header",]
+|=============================
+|Parameter |Description
+| cid | Customer ID
+| tid | Task ID
+|=============================
+
+[[task-delete-responses]]
+==== HTTP Responses
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|============================================================
+|HTTP Status Code | HTTP Status Message | Description
+|200 | OK | Success
+|============================================================
+
+
+[[task-status]]
+=== Task Status
+
+This rest endpoint return information about a task.
+
+[[task-status-url]]
+==== URL
+....
+GET /symetry/rest/{cid}/tasks/{tid}
+....
+[[task-status-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 |OK | Success.
+|==================================================
+
+[[task-status-entity]]
+==== HTTP Response Entity
+
+[width="100%", cols="<25%,<75%",options="header",]
+|===============
+|HTTP Response Entity |Description
+|<<ksvsmap-json>> | A map with key, value as string pair
+|===============
+
+===== Status Parameter returned
+[width="100%", cols="<30%,<70%",options="header",]
+|=============================
+|Parameter | Description
+| *status* | Whether or not the task is running.
+| *startDateTime* | Time the task was started if running.
+| *processIsAlive* | Is the underlying process alive?
+| *lastError* | Last error string.
+|=============================
+
+
+
+
+[[kmean-optimize-api]]
+=== KMeans Clustering Optimization Rest API
+
+This rest endpoint allows to find the optimal _k_ for your kmeans clustering model by building many model and then returning the silhouette and WSSSE metrics so that both the silhouette and elbow method can be used to decide which is the optimal _k_ number of cluster that should be used.
+
+==== URL
+....
+POST /symetry/rest/{cid}/projects/{pid}/kmeansOptimize [body=MLContext]
+....
+
+
+[[kmean-optimize-build-parameters]]
+==== MLContext Build Parameters
+
+
+[width="100%", cols="<20%,<20%,<20%,<40%",options="header",]
+|=============================
+| Parameter | Required/Optional?  | Type | Description
+| *kmeans_k_min* | Required | Integer | The minimum _k_ to test
+| *kmeans_k_max* | Required | Integer | The maximum _k_ to test
+| *kmeans_max_iterations* | Optional | Integer | The maximum number of iteration for the KMean clustering algorithm.
+| *kmeans_rnd_seed* | Optional | Optional | The random seed to use
+|=============================
+
+[[kmean-optimize-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|=============================
+|HTTP Status Code |HTTP Status Message |Description
+|202 | OK | Job accepted.
+|400 | BAD REQUEST | Unknown SymetryML project.
+`{"statusCode":"BAD_REQUEST","statusString":" +
+Cannot Find SYMETRYML id[r2] for Customer id [c1]","values":{}}`
+|=============================
+
+[[kmean-optimize-example]]
+==== Sample Request Response KMeans Optimizer
+
+....
+Request:
+POST url="http://charm:8080/symetry/rest/c1/projects/p1/kmeansOptimize"
+
+Body:
+{
+    "targets":[],
+    "inputAttributes":[],
+    "inputAttributeNames":[],
+    "targetAttributeNames":[],
+    "extraParameters":
+    {
+        "kmeans_k_min":"2",
+        "kmeans_rnd_seed":"42",
+        "kmeans_k_max":"5",
+        "kmeans_max_iterations":"1000"
+    }
+}
+
+
+Response:
+Location: http://charm:8080/symetry/rest/c1/jobs/2
+
+Response once job is finished:
+{
+    "statusCode":"OK",
+    "statusString":"Job is finished",
+    "values":{
+        "KSVSMap":{
+            "values":[
+            {
+                "kmeans_k_min":"2",
+                "kmeans_rnd_seed":"42",
+                "kmeans_5_silhouette":"0.24742236190463987",
+                "kmeans_5_wssse":"24038.895607683746",
+                "kmeans_4_silhouette":"0.2615571675703183",
+                "kmeans_3_wssse":"34178.95949179863",
+                "kmeans_k_max":"5",
+                "kmeans_2_silhouette":"0.24099295660249936",
+                "kmeans_4_wssse":"26852.68838040368",
+                "kmeans_3_silhouette":"0.21947966456276002",
+                "kmeans_max_iterations":"1000",
+                "kmeans_2_wssse":"40316.897273276154"
+            }
+            ]
+        }
+    }
+}
+....
+

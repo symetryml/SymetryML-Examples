@@ -1772,10 +1772,13 @@ image::media/web/prediction_export.png[title='Prediction Export', width=100%]
 ==== Symetry Web Configurations
 TODO: symetry-rest.txt
 
-Symetry Web can be configured by editing the `/opt/symetry/symetry-web.txt` configuration file. Ensure that `-Drtlm.web.db=/opt/symetry/symetry-web.txt` is set in `/opt/jetty/start.ini`.
+Certain Symetry Web parameters can be configured by editing the `/opt/symetry/symetry-web.txt` configuration file. Ensure that `-Drtlm.web.db=/opt/symetry/symetry-web.txt` is set in `/opt/jetty/start.ini`.
 
 [width="100%",cols="<60%,<40%",options="header",]
 |====================================
 |Parameter |Description
 |`sml.web.lagal.notice` | Set to `false` to hide the legal notice during login
+|`sym.web.auto.logoff.enable`| Set to `false` disable auto logoff
+|`sym.web.auto.logoff.time`| Auto logoff time in minutes
+
 |====================================

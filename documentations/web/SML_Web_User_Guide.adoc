@@ -184,6 +184,10 @@ the true label for the record is unknown. Instances which are drastically differ
 ones the model was build with, will yield a higher anomaly score than those which are aligned with what
 the model has seen before.
 
+TODO Cluster Models
+
+_Cluster_ models are ...
+
 [[evaluating-models]]
 === Evaluating Models
 
@@ -401,6 +405,8 @@ Multi-GPU projects cannot be persisted. SymetryML allows the Multi-GPU project t
 *float* or *double*. Use of doubles is recommended as they offer higher levels of precision. However,
 the extra precision does come with a greater memory footprint.
 
+TODO : use mgpud vs mgpuf images here
+
 image::media/web/webUI_selectNumberOfGPU.png[title='Select Number of GPU', width=50.0%]
 
 [[partition]]
@@ -482,7 +488,6 @@ data within itself. The merging occurs behind the scenes and does not require an
 The end result is a fusion project that behaves as if it has processed all of the data by itself. The user is then
 able to explore the data, build models, make predictions and etc. just like any other project.
 
-
 .Suggested Project Type
 [cols=",",options="header",]
 |====================================
@@ -492,6 +497,7 @@ able to explore the data, build models, make predictions and etc. just like any 
 |250 to 10,000 Attributes |GPU
 |10,000+ |Multi-GPU
 |Streaming |Fusion
+|Multi Region |Federation
 |====================================
 
 [[exploration]]
@@ -773,6 +779,52 @@ The anomaly models available in Symetry are:
 * Random Forest  - RFA (requires a RF enabled project)
 * Out of Sample PCA - OOSPCA
 * Histogram Based Anomaly - HBA (requires a histogram enabled project)
+
+===== Anomaly Plot
+TODO: Anomaly Plot
+
+Anomaly Plot functionality allows you to visualize the prediction of your anomaly models in a graph.
+
+This can be performed by right clicking on the anomaly model and selecting
+*Predict Live*
+image::media/web/live_predict_0.png[title='Anomaly - Plot', width=50%]
+
+image::media/web/live_predict_1.png[title='Anomaly - Plot Prediction Result', width=50%]
+
+===== Live Predict
+TODO: Live Predict
+
+For anomaly models which output their predictions to a Kafka Topic via a Kafka Stream Application, predictions can be visualized in real time.
+
+*Live Predict*
+
+1. First, right click on the model of interest and select *Live Predict*
++
+image::media/web/live_predict_0.png[title='Live Predict - Model', width=50%]
+
+2. Specify the sink topic for the model.
++
+image::media/web/live_predict_1.png[title='Live Predict - Stream Select', width=50%]
+
+3. Verify the data via the preview panel
++
+image::media/web/live_predict_2.png[title='Live Predict - Preview', width=50%]
+
+4. Select the output column for the model. You can optionally specify the quantiles to be displayed.
++
+image::media/web/live_predict_3.png[title='Live Predict - Column Select', width=50%]
+
+5. View the resulting output
++
+image::media/web/live_predict_4.png[title='Live Predict - Result', width=50%]
+
+Live polling can be disabled by right clicking on the topic name and selecting
+*Stop Polling*
+
+[[using-cluster-models]]
+==== Using Clustering Models
+TODO: Clustering
+
 
 [[reducing-models]]
 ==== Reducing Models
@@ -1319,6 +1371,8 @@ image::media/web/create_fusion_1.png[title='Type Selection', width=25%]
 image::media/web/create_fusion_3.png[title='Fusion Cells', width=50%]
 7. Finally, click "Create" to complete the process.
 
+TODO: swap fusion
+
 Should you need to edit the information in your Fusion project, you can simply
 right click on the *Fusion* node and click *Fusion Info*
 
@@ -1329,6 +1383,19 @@ From here you are able to add and remove cells as you see fit.
 
 image::media/web/update_fusion_2.png[title='Update Fusion', width=50%]
 
+
+[[creating-new-automl]]
+==== AutoML
+
+TODO: AutoML
+New in symetry 5.4 is the ability to simplify project creation with
+AutoML.
+
+AutoML streamlines various stages of the typical machine learning pipeline. Enabling this feature will automatically filter out redundant features, engineer new ones, and allow the project to focus on a spacific attribute. AutoML is meant as a precursor to  <<model-select>>. Utilizing the two steps in sequence allows the user to quickly build up models with minimal data preprocessing.
+
+image::media/web/automl_0.png[title='Update Fusion', width=50%]
+
+AutoML can be enabled on the last panel of the *New Project* wizard.
 
 [[exploring-projects]]
 ==== Exploring Projects
@@ -1526,6 +1593,17 @@ information about your new model.
 // NOTE: This option is only available in : *Univariate*, *Correlation*, *PCA*,
 // *SVD*, and *Information Gain* panels
 
+[[model-advance-features]]
+==== Advanced Model Options
+
+TODO: Model Advanced Options
+
+Most of the SML models allow for model specific options to be enabled before building. One example of such option is the *psuedo matrix inverse*. With *pseudo inverse* enabled, a linear model, which would typically not be build due to matrix non invertability, can be created by the user. However, such model is likely to be unstable and therefore this option should only be used by advanced users.
+
+image::media/web/advanced_model_features_0.png[title='Model - Advanced Options', width=50%]
+
+image::media/web/advanced_model_features_1.png[title='Model - Advanced Options LDA', width=50%]
+
 [[model-select]]
 ==== Model Select
 
@@ -1688,3 +1766,16 @@ result appears. To download the entire prediction file, click the
 *Download* button.
 +
 image::media/web/prediction_export.png[title='Prediction Export', width=100%]
+
+
+[[symetry-web-configurations]]
+==== Symetry Web Configurations
+TODO: symetry-rest.txt
+
+Symetry Web can be configured by editing the `/opt/symetry/symetry-web.txt` configuration file. Ensure that `-Drtlm.web.db=/opt/symetry/symetry-web.txt` is set in `/opt/jetty/start.ini`.
+
+[width="100%",cols="<60%,<40%",options="header",]
+|====================================
+|Parameter |Description
+|`sml.web.lagal.notice` | Set to `false` to hide the legal notice during login
+|====================================

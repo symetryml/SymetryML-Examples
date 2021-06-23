@@ -186,7 +186,7 @@ the model has seen before.
 
 TODO Cluster Models
 
-_Cluster_ models are ...
+_Clustering_ models attempt to group your data such that the instances within a particular group are more similar to each other than to their counterparts in other groups. These models are unsupervised and within SymetryML can be built in an online fashion.
 
 [[evaluating-models]]
 === Evaluating Models

@@ -36,8 +36,6 @@ POST /symetry/rest/{cid}/tasks/create [Body=TaskInfo (encrypted)]
 |=================
 
 
-
-
 [[task-start]]
 === Task Start
 
@@ -58,7 +56,6 @@ GET /symetry/rest/{cid}/tasks/{tid}/start
 |HTTP Status Code |HTTP Status Message |Description
 |200 |OK |Success.
 |==================================================
-
 
 
 [[task-stop]]

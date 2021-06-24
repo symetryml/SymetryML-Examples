@@ -4,7 +4,7 @@
 :toc-placement: preamble
 :doctype: book
 :imagesdir: ./media/rest
-:sectnums:
+:sectnums:Real-Time Anomaly Models
 
 Copyright © 2020 by Symetry, Inc. +
 14 Pine Street, Ste 6 +
@@ -737,6 +737,12 @@ cannot be build after a project has learned a dataset. Instead, the user must sp
 * Specify the group column.
 * Please see the <<model-km>> for details about the additional configuration available.
 
+
+[[aboutclustering]]
+==== About Clustering
+
+New with SymetryML version 5.4 is an online version of Kmeans clustering.  The clustering algorithm is controlled by a few parameters that needs to be specified when creating a project.
+Please consult the <<clustering-model>> for details on the additional configuration to enable kmeans clustering on your project.
 
 [[about-partitioned-projects]]
 === About Partitioned Projects
@@ -2106,7 +2112,7 @@ Fusion Project allows to handle data coming from a stream with very high through
 [[id-fusion-3nodes]]
 image::fusion-1.png[height=400, align="center", title='Example of 3 Cells Fusion Project']
 
-When a request is made to <<modeling-api>> or <<exploration-api>> fusion project will take care of interrogating its _cell projects_ to get the latest data in a 'just in time' fashion. Under the hood, the Fusion project refresh the data when needed, but no less that a pre-defined number of seconds. The default value is 15 seconds but can easily be adjusted with the `rtlm.option.sml.fusion.prefetch.min.time.ms` config parameter of the 'symetry-rest.txt' configuration file. Please consult the <<../../guides/SML_Installation_Guide.adoc#, Admin Guide>> for details.
+When a request is made to <<modeling-api>> or <<exploration-api>> fusion project will take care of interrogating its _cell projects_ to get the latest data in a 'just in time' fashion. Under the hood, the Fusion project refresh the data when needed, but no less that a pre-defined number of seconds. The default value is 15 seconds but can easily be adjusted with the `rtlm.option.sml.fusion.prefetch.min.time.ms` config parameter of the 'symetry-rest.txt' configuration file. Please consult the <<../../guides/SML_Installation_Guide.adoc#, Installation Guide>> for details.
 
 One important thing to know about Fusion project is that all components (the main fusion project and its _cell projects_ should reside relatively close to each other in order to minimize network latency. Ideally they should reside in the same rack mount.
 
@@ -2782,9 +2788,12 @@ Response:
 
 * <<specific-model-building>>
 * <<anomaly-models>>
+* <<clustering-model>>
 * <<mlcontext-build-parameters>>
+* <<build-model>>
 * <<optimized-model-building>>
 * <<building-sequence-models>>
+* <<kmean-optimize-api>>
 * <<model-information>>
 * <<get-code-for-model>>
 * <<model-delete>>
@@ -2806,6 +2815,21 @@ SymetryML version 5.3 introduces 3 new anomaly detection algorithms:
 
 These algorithms work in real-time on streaming data and are a type of of unsupervised learning algorithm in the sense that one does not need to provide 'positive' examples of anomalies to the different algorithms. The 3 models use intrinsic values of the inputs features to compute an anomaly scores. To create such models just use the appropriate id - from <<model-algorithm-id>> section - when creating them using <<build-model>> rest API.
 
+[[clustering-model]]
+==== About Clustering
+
+The following sections describes the KMeans clustering algorithm configuration that needs to be specified when creating a new project.
+
+[width="100%", cols="<30%,<30%,<60%",options="header",]
+|=============================
+| Parameter | Required/Optional? | Description
+| *cluster_rnd_seed* | Optional | Set the seed of the randomizer
+| *cluster_features* | Mandatory | This is a string containing the features to use for the clustering algorithm. The feature are colon separated.
+| *cluster_max_iterations* | Optional | Default is *1000*. This control the number of iterations of the kmeans algorithm.
+| *cluster_num_centroids* | Optional | Default is *100*. This parameter control the number of centroid that are kept in real time on the data. Typically this number is much higher than the intended number of cluster - e.g. the target 'k' parameters
+| *cluster_warmup_period* | Optional | Default is *101*. This parameters control how many tuples of data must be seen before the initial real-time cluster will be constructed using the 'cluster_num_centroids' parameter as
+the k number. Once the initial kluster is created it will just be updated in real-time with each new tuple/row of data. Note that *cluster_warmup_period* needs to be greater than *cluster_num_centroids*, e.g. *cluster_num_centroids*=100 and *cluster_warmup_period*=101. If this condition is not meet an error will be raised by the software.
+|=============================
 
 [[elasticnet-aic]]
 ==== About Elastic Net AIC
@@ -2844,6 +2868,7 @@ The following models are supported. For power regression model to be available a
 |*elasticnet* | Elastic Net
 |*hmm* |Hidden Markov Chains
 |*km* | Kaplan Meier
+|*kmeans* | KMeans Clustering
 |*lasso* | Lasso Regression
 |*lda* |LDA, Linear Discriminant
 |*lsvm* |Linear SVM
@@ -3202,7 +3227,98 @@ Job Response:
 
 Markov Chain Models and Hidden Markov Models are built differently. First, the project must be marked as a “sequence” project. After some data is learned, you can build Markov Chains, Hidden Markov Models, or both. These types of models have input attributes only; they do not have a target.
 
-For Markov Chains, you input attributes to specify the sequence attributes to use. For Hidden Markov Model, you also specify the hidden state that must be categorical. The Observed state can be continuous or categorical. If it is acontinuous attribute, normal distribution will be assumed, mean and standard deviation of the data is used.
+For Markov Chains, you input attributes to specify the sequence attributes to use. For Hidden Markov Model, you also specify the hidden state that must be categorical. The Observed state can be continuous or categorical. If it is a continuous attribute, normal distribution will be assumed, mean and standard deviation of the data is used.
+
+
+[[kmean-optimize-api]]
+=== KMeans Clustering Model Optimization
+
+This rest endpoint allows to find the optimal _k_ for your kmeans clustering model by building many model and then returning the silhouette and WSSSE metrics so that both the silhouette and elbow method can be used to decide which is the optimal _k_ number of cluster that should be used.
+
+==== URL
+....
+POST /symetry/rest/{cid}/projects/{pid}/kmeansOptimize [body=MLContext]
+....
+
+
+[[kmean-optimize-build-parameters]]
+==== MLContext Build Parameters
+
+
+[width="100%", cols="<20%,<20%,<20%,<40%",options="header",]
+|=============================
+| Parameter | Required/Optional?  | Type | Description
+| *kmeans_k_min* | Required | Integer | The minimum _k_ to test
+| *kmeans_k_max* | Required | Integer | The maximum _k_ to test
+| *kmeans_max_iterations* | Optional | Integer | The maximum number of iteration for the KMean clustering algorithm.
+| *kmeans_rnd_seed* | Optional | Optional | The random seed to use
+|=============================
+
+[[kmean-optimize-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|=============================
+|HTTP Status Code |HTTP Status Message |Description
+|202 | OK | Job accepted.
+|400 | BAD REQUEST | Unknown SymetryML project.
+`{"statusCode":"BAD_REQUEST","statusString":" +
+Cannot Find SYMETRYML id[r2] for Customer id [c1]","values":{}}`
+|=============================
+
+[[kmean-optimize-example]]
+==== Sample Request Response KMeans Optimizer
+
+....
+Request:
+POST url="http://charm:8080/symetry/rest/c1/projects/p1/kmeansOptimize"
+
+Body:
+{
+    "targets":[],
+    "inputAttributes":[],
+    "inputAttributeNames":[],
+    "targetAttributeNames":[],
+    "extraParameters":
+    {
+        "kmeans_k_min":"2",
+        "kmeans_rnd_seed":"42",
+        "kmeans_k_max":"5",
+        "kmeans_max_iterations":"1000"
+    }
+}
+
+
+Response:
+Location: http://charm:8080/symetry/rest/c1/jobs/2
+
+Response once job is finished:
+{
+    "statusCode":"OK",
+    "statusString":"Job is finished",
+    "values":{
+        "KSVSMap":{
+            "values":[
+            {
+                "kmeans_k_min":"2",
+                "kmeans_rnd_seed":"42",
+                "kmeans_5_silhouette":"0.24742236190463987",
+                "kmeans_5_wssse":"24038.895607683746",
+                "kmeans_4_silhouette":"0.2615571675703183",
+                "kmeans_3_wssse":"34178.95949179863",
+                "kmeans_k_max":"5",
+                "kmeans_2_silhouette":"0.24099295660249936",
+                "kmeans_4_wssse":"26852.68838040368",
+                "kmeans_3_silhouette":"0.21947966456276002",
+                "kmeans_max_iterations":"1000",
+                "kmeans_2_wssse":"40316.897273276154"
+            }
+            ]
+        }
+    }
+}
+....
+
 
 [[model-information]]
 === Model Information
@@ -3244,6 +3360,9 @@ GET url="http://charm:8080/symetry/rest/c1/projects/irisTest/models/ldaOptimized
 Response:
 {"statusCode":"OK","statusString":"OK","values":{"modelInfo":{"modelType":"lda","attributeNames":["petal_length","petal_width","sepal_width","petal_length_b1","sepal_lengt_b1","sepal_width_b1","petal_width_b2","sepal_length"],"attributeIndexes":[2,3,1,6,4,5,7,0],"info":{"buildStatus":"\"No Error\"","z0":"18.9666","z1LTz0":"false","z":"\"l0 \u003c- c(3.93801 ,2.43275 ,-8.92229 ,-15.9048 ,0.997005 ,-1.15579 ,-4.66130 ,59.3254 )\n\"","buildTimeNanosec":"6553273","OverallContribution":"4.49040"},"predictInfo":["resZ","res","normZ"],"scoreInfo":["normZ"],"buildTime":54,"modelBuilt":140,"targetNames":["Iris_versicolor"],"targetindexes":[13],"modelId":"ldaOptimized"}}}
 ....
+
+
+
 
 [[model-info-map-key]]
 ==== Model Info Map Key
@@ -3916,10 +4035,12 @@ The prediction service returns a <<ksvsmap-json>>. This map is an array of map<k
 - *z0* +
 - *z1GTz0* +
 Examples: +
-*Res :1 +
+*res :1 +
 resZ :-1.66850 +
 z0 :0.240482 +
 z1GTz0 :true*
+
+LDA also return  *resU*, which is similar to *res* but use a different threshold for when the positive and negative examples are unbalanced in the training data. + 
 |*LSVM* |- *res*, 1 or 0
 |*LSVR* |- *res*, the regression result
 |*MLR* |- *res*, the regression result
@@ -5834,6 +5955,193 @@ Body:
 ....
 
 
+
+[[tasks]]
+== Tasks API
+
+The task suite of Rest api allows to start / stop SymetryML kafka stream application. These application are meant to automatically perform prediction on a Kafka
+Topic and then save the prediction results in another Kafka topic. 
+
+There is a maximum number of task that can be run at the same time. This number is controlled by the `sml.task.max` 
+SymetryML control parameter. Please consult <<../../guides/SML_Installation_Guide.adoc#about-the-symetryml-configuration, Installation Guide>> for more details on how to set these parameters. The default 
+value for this `sml.task.max` parameter is 4.
+
+Please consult the link:../kafka-stream-app.md[totototo] application for details. TBD
+
+
+[[task-create]]
+=== Task Create
+
+This API function creates a Task. Please see <<data-source-encryption>> for information on how to encrypt <<task-info-json>> data structures.
+
+[[task-create-url]]
+==== URL
+....
+POST /symetry/rest/{cid}/tasks/create [Body=TaskInfo (encrypted)]
+....
+[width="100%",cols="<25%,<25%,<50%",options="header",]
+|=================
+|Parameter |Required/Optional? |Description
+|*force* |Optional | if true then will override any pre-existing Task with same id. Default is *false*.
+|=================
+
+
+[[task-create-http-responses]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|=================
+|HTTP Status Code |HTTP Status Message |Description
+|202 |CREATED | Success.
+|409 |CONFLICT | A task with the specified name already exists and the `force` parameter was false.
+|=================
+
+
+[[task-start]]
+=== Task Start
+
+This rest endpoint start a task. 
+
+[[task-start-url]]
+==== URL
+....
+GET /symetry/rest/{cid}/tasks/{tid}/start
+....
+
+
+[[task-start-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 |OK |Success.
+|==================================================
+
+
+[[task-stop]]
+=== Stop a Start
+
+This rest endpoint stop a task. 
+
+[[task-stop-url]]
+==== URL
+....
+GET /symetry/rest/{cid}/tasks/{tid}/stop
+....
+
+
+[[task-stop-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 | OK | Success.
+|==================================================
+
+
+
+[[task-list]]
+=== Task List
+
+This rest endpoint return a list of tasks that belong to a given project for a given user.
+
+[[task-list-url]]
+==== URL
+....
+GET /{cid}/tasks
+....
+[[task-list-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 | OK | Success.
+|==================================================
+
+[[task-list-entity]]
+==== HTTP Response Entity
+
+[width="100%", cols="<25%,<75%",options="header",]
+|===============
+|HTTP Response Entity |Description
+|<<stringlist-json>> | A list of task name.
+|===============
+
+
+
+
+[[task-delete]]
+=== Delete a Task
+Delete a task If the task is running it will first be stopped.
+
+[[task-delete-url]]
+==== URL
+....
+DELETE /symetry/rest/{cid}/tasks/{tid}
+....
+
+==== Canonical URL Parameters
+[width="100%", cols="<30%,<70%",options="header",]
+|=============================
+|Parameter |Description
+| cid | Customer ID
+| tid | Task ID
+|=============================
+
+[[task-delete-responses]]
+==== HTTP Responses
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|============================================================
+|HTTP Status Code | HTTP Status Message | Description
+|200 | OK | Success
+|============================================================
+
+
+[[task-status]]
+=== Task Status
+
+This rest endpoint return information about a task.
+
+[[task-status-url]]
+==== URL
+....
+GET /symetry/rest/{cid}/tasks/{tid}
+....
+[[task-status-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 |OK | Success.
+|==================================================
+
+[[task-status-entity]]
+==== HTTP Response Entity
+
+[width="100%", cols="<25%,<75%",options="header",]
+|===============
+|HTTP Response Entity |Description
+|<<ksvsmap-json>> | A map with key, value as string pair
+|===============
+
+===== Status Parameter returned
+[width="100%", cols="<30%,<70%",options="header",]
+|=============================
+|Parameter | Description
+| *status* | Whether or not the task is running.
+| *startDateTime* | Time the task was started if running.
+| *processIsAlive* | Is the underlying process alive?
+| *lastError* | Last error string.
+|=============================
+
+
+
+
+
 [[misc-api]]
 == Miscellaneous API
 
@@ -6120,6 +6428,20 @@ DSInfo : {
       "name" : "string",
       "info" : "object",
       "extra" : "object"
+}
+....
+
+
+
+[[task-info-json]]
+==== TaskInfo JSON
+
+[source, javascript]
+....
+TaskInfo : {
+      "type" : "string",
+      "name" : "string",
+      "params" : "object",
 }
 ....
 

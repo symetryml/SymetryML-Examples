@@ -1,9 +1,9 @@
 
 [[clustering]]
-== Clustering
+=== Clustering
 
 New with SymetryML version 5.4 is an online version of Kmeans clustering. 
-The clustering algorithm is controlled by a few parameters
+The clustering algorithm is controlled by a few parameters that needs to be specified when creating a project.
 
 [width="100%", cols="<30%,<30%,<60%",options="header",]
 |=============================

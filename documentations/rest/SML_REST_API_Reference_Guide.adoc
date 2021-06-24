@@ -738,6 +738,12 @@ cannot be build after a project has learned a dataset. Instead, the user must sp
 * Please see the <<model-km>> for details about the additional configuration available.
 
 
+[[aboutclustering]]
+==== About Clustering
+
+New with SymetryML version 5.4 is an online version of Kmeans clustering.  The clustering algorithm is controlled by a few parameters that needs to be specified when creating a project.
+Please consult the <<clustering-model>> for details on the additional configuration to enable kmeans clustering on your project.
+
 [[about-partitioned-projects]]
 === About Partitioned Projects
 
@@ -2782,7 +2788,7 @@ Response:
 
 * <<specific-model-building>>
 * <<anomaly-models>>
-* <<clustering>>
+* <<clustering-model>>
 * <<mlcontext-build-parameters>>
 * <<optimized-model-building>>
 * <<building-sequence-models>>
@@ -2807,11 +2813,10 @@ SymetryML version 5.3 introduces 3 new anomaly detection algorithms:
 
 These algorithms work in real-time on streaming data and are a type of of unsupervised learning algorithm in the sense that one does not need to provide 'positive' examples of anomalies to the different algorithms. The 3 models use intrinsic values of the inputs features to compute an anomaly scores. To create such models just use the appropriate id - from <<model-algorithm-id>> section - when creating them using <<build-model>> rest API.
 
-[[clustering]]
-==== Clustering
+[[clustering-model]]
+==== About Clustering
 
-New with SymetryML version 5.4 is an online version of Kmeans clustering. 
-The clustering algorithm is controlled by a few parameters that needs to be specified when creating a project.
+The following sections describes the KMeans clustering algorithm configuration that needs to be specified when creating a new project.
 
 [width="100%", cols="<30%,<30%,<60%",options="header",]
 |=============================
@@ -5849,6 +5854,128 @@ Body:
     }
 }
 ....
+
+
+
+[[task-stop]]
+=== Stop a Start
+
+This rest endpoint stop a task. 
+
+[[task-stop-url]]
+==== URL
+....
+GET /symetry/rest/{cid}/tasks/{tid}/start
+....
+
+
+[[task-stop-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 | OK | Success.
+|==================================================
+
+
+
+[[task-list]]
+=== Task List
+
+This rest endpoint return a list of tasks that belong to a given project for a given user.
+
+[[task-list-url]]
+==== URL
+....
+GET /{cid}/tasks
+....
+[[task-list-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 | OK | Success.
+|==================================================
+
+[[task-list-entity]]
+==== HTTP Response Entity
+
+[width="100%", cols="<25%,<75%",options="header",]
+|===============
+|HTTP Response Entity |Description
+|<<stringlist-json>> | A list of task name.
+|===============
+
+
+
+
+[[task-delete]]
+=== Delete a Task
+Delete a task If the task is running it will first be stopped.
+
+[[task-delete-url]]
+==== URL
+....
+DELETE /symetry/rest/{cid}/tasks/{tid}
+....
+
+==== Canonical URL Parameters
+[width="100%", cols="<30%,<70%",options="header",]
+|=============================
+|Parameter |Description
+| cid | Customer ID
+| tid | Task ID
+|=============================
+
+[[task-delete-responses]]
+==== HTTP Responses
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|============================================================
+|HTTP Status Code | HTTP Status Message | Description
+|200 | OK | Success
+|============================================================
+
+
+[[task-status]]
+=== Task Status
+
+This rest endpoint return information about a task.
+
+[[task-status-url]]
+==== URL
+....
+GET /symetry/rest/{cid}/tasks/{tid}
+....
+[[task-status-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 |OK | Success.
+|==================================================
+
+[[task-status-entity]]
+==== HTTP Response Entity
+
+[width="100%", cols="<25%,<75%",options="header",]
+|===============
+|HTTP Response Entity |Description
+|<<ksvsmap-json>> | A map with key, value as string pair
+|===============
+
+===== Status Parameter returned
+[width="100%", cols="<30%,<70%",options="header",]
+|=============================
+|Parameter | Description
+| *status* | Whether or not the task is running.
+| *startDateTime* | Time the task was started if running.
+| *processIsAlive* | Is the underlying process alive?
+| *lastError* | Last error string.
+|=============================
+
 
 
 [[misc-api]]

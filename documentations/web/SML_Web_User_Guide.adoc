@@ -184,8 +184,6 @@ the true label for the record is unknown. Instances which are drastically differ
 ones the model was build with, will yield a higher anomaly score than those which are aligned with what
 the model has seen before.
 
-TODO Cluster Models
-
 _Clustering_ models attempt to group your data such that the instances within a particular group are more similar to each other than to their counterparts in other groups. These models are unsupervised and within SymetryML can be built in an online fashion.
 
 [[evaluating-models]]
@@ -789,7 +787,6 @@ image::media/web/anomaly_plot_0.png[title='Anomaly - Plot', width=50%]
 image::media/web/anomaly_plot_1.png[title='Anomaly - Plot Prediction Result', width=50%]
 
 ===== Live Predict
-TODO: Live Predict
 
 For anomaly models which output their predictions to a Kafka Topic via a Kafka Stream Application, predictions can be visualized in real time.
 
@@ -797,7 +794,7 @@ For anomaly models which output their predictions to a Kafka Topic via a Kafka S
 
 1. First, right click on the model of interest and select *Live Predict*
 +
-image::media/web/live_predict_0.png[title='Live Predict - Model', width=50%]
+image::media/web/live_predict_0.png[title='Live Predict - Model', width=25%]
 
 2. Specify the sink topic for the model.
 +
@@ -817,10 +814,6 @@ image::media/web/live_predict_4.png[title='Live Predict - Result', width=50%]
 
 Live polling can be disabled by right clicking on the topic name and selecting
 *Stop Polling*
-
-[[using-cluster-models]]
-==== Using Clustering Models
-TODO: Clustering
 
 
 [[reducing-models]]
@@ -1342,7 +1335,61 @@ image::media/web/km1.png[title='KM Build Model', width=50%]
 [[cluster-projects]]
 ===== Clustering
 
-TODO Clustering
+To build a clustering model a project needs to be created with a specific
+set of parameters. These parameters can be enabled as part of the *Advanced Project Options* on the last page of the project wizard.
+
+image::media/web/cluster_0.png[title='Advanced Options - Clustering', width=50%]
+{nbsp}
+
+[width="100%", cols="<30%,<30%,<60%",options="header",]
+|=============================
+| Parameter | Required/Optional? | Description
+| *cluster_rnd_seed* | Optional | Set the seed of the randomizer
+| *cluster_features* | Mandatory | This is a string containing the features to use for the clustering algorithm. The feature are colon separated.
+| *cluster_max_iterations* | Optional | Default is *1000*. This control the number of iterations of the kmeans algorithm.
+| *cluster_num_centroids* | Optional | Default is *100*. This parameter control the number of centroid that are kept in real time on the data. Typically this number is much higher than the intended number of cluster - e.g. the target 'k' parameters
+| *cluster_warmup_period* | Optional | Default is *101*. This parameters control how many tuples of data must be seen before the initial real-time cluster will be constructed using the 'cluster_num_centroids' parameter as
+the k number. Once the initial cluster is created it will just be updated in real-time with each new tuple/row of data. Note that *cluster_warmup_period* needs to be greater than *cluster_num_centroids*, e.g. *cluster_num_centroids*=100 and *cluster_warmup_period*=101. If this condition is not meet an error will be raised by the software.
+|=============================
+
+Once a cluster project is created, building the model is as simple as right click on the *Exploration* icon and selecting the corresponding option.
+
+image::media/web/cluster_build_0.png[title='Build Model - K-Means', width=50%]
+{nbsp}
+
+image::media/web/cluster_build_1.png[title='Build Model - K-Means Parameters', width=50%]
+{nbsp}
+
+
+The above process assumes that the correct number of clusters is known ahead of time. This is typically not the case. Cluster selection is an iterative process during which a number of different models will be built and evaluated.
+
+*K-Means Select* is a feature that enables you to perform this analysis in one simple step.
+
+1. First, select the *K-Means Select* option under the *Exploration* menu.
++
+image::media/web/cluster_optimize_0.png[title='Optimize K-Means', width=50%]
+{nbsp}
+
+2. Select the appropriate range of clusters to evaluate.
++
+image::media/web/cluster_optimize_1.png[title='Optimize K-Means Parameters', width=50%]
+{nbsp}
+
+3. You will be notified of the results once the *Optimize K-Means Job* is complete.
++
+image::media/web/cluster_optimize_2.png[title='Optimize K-Means Job Done', width=50%]
+{nbsp}
+
+4. The result of the optimization process is a set of two graphics which allow
+you to compare the *WSSSE* and the *Silhoutte Scores* across different models.
++
+image::media/web/cluster_optimize_3.png[title='Optimize K-Means Result', width=50%]
+{nbsp}
+
+5. You can complete the process by choosing the optimal number of clusters and 
+clicking on the *Build Model* button.
+
+
 
 [[creating-new-fed-projects]]
 ==== Federated Projects

@@ -4035,10 +4035,12 @@ The prediction service returns a <<ksvsmap-json>>. This map is an array of map<k
 - *z0* +
 - *z1GTz0* +
 Examples: +
-*Res :1 +
+*res :1 +
 resZ :-1.66850 +
 z0 :0.240482 +
 z1GTz0 :true*
+
+LDA also return  *resU*, which is similar to *res* but use a different threshold for when the positive and negative examples are unbalanced in the training data. + 
 |*LSVM* |- *res*, 1 or 0
 |*LSVR* |- *res*, the regression result
 |*MLR* |- *res*, the regression result

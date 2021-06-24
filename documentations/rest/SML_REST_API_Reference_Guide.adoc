@@ -3874,8 +3874,15 @@ The entity returned by the job depends on the type of job that just finished. Fo
 | DSUpdateJob | returns <<projectinfo-json>> that reflect new state of the project.
 | SparkDSUpdateJob | return <<projectinfo-json>> that reflect new state of the project.
 | ExploreVIFJob | returns a KSVSMap (see <<ksvsmap-json>>).
-| Optimized Kmeans Job | return a <<dataframe-json>>. TBDMIKE
-| GetPredictionResults | see <<prediction-result>> for details. return a <<dataframe-json>>. TBDMIKE
+| Optimized Kmeans Job | returns a <<ksvsmap-json>>. The returned keys are in the format `kmeans_{N}_wssse` and `kmeans_{N}_silhouette` where the corresponding values represent the resepective WSSSE and Silhouette scores for a model build with `N` clusters. 
+| DSPredictDataFrameJob | returns a <<dataframe-json>>. The returned Dataframe contains the following information: +
+*id* - row id +
+*{MODEL_SCORE}* - one of [oscore, hbascore, rf_anomaly_score] +
+*res* - anomaly flag via a simple rule +
+*q95* - 95% quantile of model scores +
+*q98* - 98% quantile of model scores +
+*q99* - 99% quantile of model scores +
+*evt* - anomaly flag via Extreme Value Theory rule
 | Other jobs do not return any entity. | If a job is not finished or has yet to be started, it returns a JobInfo entity that contains detailed information about a given job. See <<jobinfo-json>>.
 |=========================
 

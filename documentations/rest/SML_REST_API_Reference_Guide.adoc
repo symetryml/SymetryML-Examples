@@ -2112,7 +2112,7 @@ Fusion Project allows to handle data coming from a stream with very high through
 [[id-fusion-3nodes]]
 image::fusion-1.png[height=400, align="center", title='Example of 3 Cells Fusion Project']
 
-When a request is made to <<modeling-api>> or <<exploration-api>> fusion project will take care of interrogating its _cell projects_ to get the latest data in a 'just in time' fashion. Under the hood, the Fusion project refresh the data when needed, but no less that a pre-defined number of seconds. The default value is 15 seconds but can easily be adjusted with the `rtlm.option.sml.fusion.prefetch.min.time.ms` config parameter of the 'symetry-rest.txt' configuration file. Please consult the <<../../guides/SML_Installation_Guide.adoc#, Admin Guide>> for details.
+When a request is made to <<modeling-api>> or <<exploration-api>> fusion project will take care of interrogating its _cell projects_ to get the latest data in a 'just in time' fashion. Under the hood, the Fusion project refresh the data when needed, but no less that a pre-defined number of seconds. The default value is 15 seconds but can easily be adjusted with the `rtlm.option.sml.fusion.prefetch.min.time.ms` config parameter of the 'symetry-rest.txt' configuration file. Please consult the <<../../guides/SML_Installation_Guide.adoc#, Installation Guide>> for details.
 
 One important thing to know about Fusion project is that all components (the main fusion project and its _cell projects_ should reside relatively close to each other in order to minimize network latency. Ideally they should reside in the same rack mount.
 
@@ -5963,10 +5963,10 @@ The task suite of Rest api allows to start / stop SymetryML kafka stream applica
 Topic and then save the prediction results in another Kafka topic. 
 
 There is a maximum number of task that can be run at the same time. This number is controlled by the `sml.task.max` 
-SymetryML control parameter. Please consult <<TBD>> for more details on how to set these parameters. The default 
+SymetryML control parameter. Please consult <<../../guides/SML_Installation_Guide.adoc#about-the-symetryml-configuration, Installation Guide>> for more details on how to set these parameters. The default 
 value for this `sml.task.max` parameter is 4.
 
-Please consult the <<symetryml kafka stream>> application for details. TBD
+Please consult the <<../kafka-stream-app.md>> application for details. TBD
 
 
 [[task-create]]

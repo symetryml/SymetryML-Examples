@@ -5924,7 +5924,7 @@ This rest endpoint stop a task.
 [[task-stop-url]]
 ==== URL
 ....
-GET /symetry/rest/{cid}/tasks/{tid}/start
+GET /symetry/rest/{cid}/tasks/{tid}/stop
 ....
 
 
@@ -6325,6 +6325,20 @@ DSInfo : {
       "name" : "string",
       "info" : "object",
       "extra" : "object"
+}
+....
+
+
+
+[[task-info-json]]
+==== TaskInfo JSON
+
+[source, javascript]
+....
+TaskInfo : {
+      "type" : "string",
+      "name" : "string",
+      "params" : "object",
 }
 ....
 

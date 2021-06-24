@@ -665,6 +665,7 @@ Response:
 * <<about-hashtrick-projects>>
 * <<about-sequence-projects>>
 * <<about-federated-projects>>
+* <<about-clustering>>
 * <<about-timeseries-expansion>>
 * <<create-new-symetryml-project>>
 * <<project-save>>
@@ -738,8 +739,8 @@ cannot be build after a project has learned a dataset. Instead, the user must sp
 * Please see the <<model-km>> for details about the additional configuration available.
 
 
-[[aboutclustering]]
-==== About Clustering
+[[about-clustering]]
+=== About Clustering
 
 New with SymetryML version 5.4 is an online version of Kmeans clustering.  The clustering algorithm is controlled by a few parameters that needs to be specified when creating a project.
 Please consult the <<clustering-model>> for details on the additional configuration to enable kmeans clustering on your project.
@@ -3402,6 +3403,17 @@ svmOmegas
 svmGamma +
 svmOmegas +
 |*Bayes* |
+|*Kmeans* | 
+
+[width="100%",cols="<25%,<75%a",options="header",]
+!=============
+! Key  ! Description
+! *kmeans_k* !  K value for this KMeans model
+! *kmeans_silhouette* ! Silhouette algorithm score
+! *kmeans_wssse* !  Within set sum of squared error, usefull for elbow heuristic.
+! *kmeans_silhouette_trace* !  All the values used to compute silhouette score.
+!=============
+
 |*Markov Chains* |Transition Matrix formatted as follows: +
 {tm1$STATE:$:to$STATE – where STATE corresponds for Markov process state.
 |*Hidden Markov Model* |Transition Matrix formatted as follows: +
@@ -5959,14 +5971,11 @@ Body:
 [[tasks]]
 == Tasks API
 
-The task suite of Rest api allows to start / stop SymetryML kafka stream application. These application are meant to automatically perform prediction on a Kafka
+The task suite of Rest API methods allows to create,start, stop  and list SymetryML kafka stream applications. These applications are meant to automatically perform prediction on a Kafka
 Topic and then save the prediction results in another Kafka topic. 
 
 There is a maximum number of task that can be run at the same time. This number is controlled by the `sml.task.max` 
-SymetryML control parameter. Please consult <<../../guides/SML_Installation_Guide.adoc#about-the-symetryml-configuration, Installation Guide>> for more details on how to set these parameters. The default 
-value for this `sml.task.max` parameter is 4.
-
-Please consult the link:../kafka-stream-app.md[totototo] application for details. TBD
+SymetryML control parameter. Please consult <<../../guides/SML_Installation_Guide.adoc#about-the-symetryml-configuration, Installation Guide>> for more details on how to set these parameters. The default  value for this `sml.task.max` parameter is 4. Please consult the link:../kafka-stream-app.md[SML Kafka Stream Application Documentation] for details.
 
 
 [[task-create]]

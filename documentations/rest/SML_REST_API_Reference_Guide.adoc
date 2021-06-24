@@ -2782,6 +2782,7 @@ Response:
 
 * <<specific-model-building>>
 * <<anomaly-models>>
+* <<clustering>>
 * <<mlcontext-build-parameters>>
 * <<optimized-model-building>>
 * <<building-sequence-models>>

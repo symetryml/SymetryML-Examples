@@ -665,6 +665,7 @@ Response:
 * <<about-hashtrick-projects>>
 * <<about-sequence-projects>>
 * <<about-federated-projects>>
+* <<about-clustering>>
 * <<about-timeseries-expansion>>
 * <<create-new-symetryml-project>>
 * <<project-save>>
@@ -738,8 +739,8 @@ cannot be build after a project has learned a dataset. Instead, the user must sp
 * Please see the <<model-km>> for details about the additional configuration available.
 
 
-[[aboutclustering]]
-==== About Clustering
+[[about-clustering]]
+=== About Clustering
 
 New with SymetryML version 5.4 is an online version of Kmeans clustering.  The clustering algorithm is controlled by a few parameters that needs to be specified when creating a project.
 Please consult the <<clustering-model>> for details on the additional configuration to enable kmeans clustering on your project.
@@ -3402,6 +3403,17 @@ svmOmegas
 svmGamma +
 svmOmegas +
 |*Bayes* |
+|*Kmeans | 
+
+[width="100%",cols="<25%,<75%a",options="header",]
+!=============
+! Key  ! Description
+! *kmeans_k* !  K value for this KMeans model
+! *kmeans_silhouette* ! Silhouette algorithm score
+! *kmeans_wssse* !  Within set sum of squared error, usefull for elbow heuristic.
+! *kmeans_silhouette_trace* !  All the values used to compute silhouette score.
+!=============
+
 |*Markov Chains* |Transition Matrix formatted as follows: +
 {tm1$STATE:$:to$STATE – where STATE corresponds for Markov process state.
 |*Hidden Markov Model* |Transition Matrix formatted as follows: +

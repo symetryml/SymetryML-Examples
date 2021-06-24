@@ -3403,7 +3403,7 @@ svmOmegas
 svmGamma +
 svmOmegas +
 |*Bayes* |
-|*Kmeans | 
+|*Kmeans* | 
 
 [width="100%",cols="<25%,<75%a",options="header",]
 !=============

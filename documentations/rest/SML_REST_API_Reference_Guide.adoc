@@ -2790,8 +2790,10 @@ Response:
 * <<anomaly-models>>
 * <<clustering-model>>
 * <<mlcontext-build-parameters>>
+* <<build-model>>
 * <<optimized-model-building>>
 * <<building-sequence-models>>
+* <<kmean-optimize-api>>
 * <<model-information>>
 * <<get-code-for-model>>
 * <<model-delete>>
@@ -2866,6 +2868,7 @@ The following models are supported. For power regression model to be available a
 |*elasticnet* | Elastic Net
 |*hmm* |Hidden Markov Chains
 |*km* | Kaplan Meier
+|*kmeans* | KMeans Clustering
 |*lasso* | Lasso Regression
 |*lda* |LDA, Linear Discriminant
 |*lsvm* |Linear SVM
@@ -3224,7 +3227,98 @@ Job Response:
 
 Markov Chain Models and Hidden Markov Models are built differently. First, the project must be marked as a “sequence” project. After some data is learned, you can build Markov Chains, Hidden Markov Models, or both. These types of models have input attributes only; they do not have a target.
 
-For Markov Chains, you input attributes to specify the sequence attributes to use. For Hidden Markov Model, you also specify the hidden state that must be categorical. The Observed state can be continuous or categorical. If it is acontinuous attribute, normal distribution will be assumed, mean and standard deviation of the data is used.
+For Markov Chains, you input attributes to specify the sequence attributes to use. For Hidden Markov Model, you also specify the hidden state that must be categorical. The Observed state can be continuous or categorical. If it is a continuous attribute, normal distribution will be assumed, mean and standard deviation of the data is used.
+
+
+[[kmean-optimize-api]]
+=== KMeans Clustering Model Optimization
+
+This rest endpoint allows to find the optimal _k_ for your kmeans clustering model by building many model and then returning the silhouette and WSSSE metrics so that both the silhouette and elbow method can be used to decide which is the optimal _k_ number of cluster that should be used.
+
+==== URL
+....
+POST /symetry/rest/{cid}/projects/{pid}/kmeansOptimize [body=MLContext]
+....
+
+
+[[kmean-optimize-build-parameters]]
+==== MLContext Build Parameters
+
+
+[width="100%", cols="<20%,<20%,<20%,<40%",options="header",]
+|=============================
+| Parameter | Required/Optional?  | Type | Description
+| *kmeans_k_min* | Required | Integer | The minimum _k_ to test
+| *kmeans_k_max* | Required | Integer | The maximum _k_ to test
+| *kmeans_max_iterations* | Optional | Integer | The maximum number of iteration for the KMean clustering algorithm.
+| *kmeans_rnd_seed* | Optional | Optional | The random seed to use
+|=============================
+
+[[kmean-optimize-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|=============================
+|HTTP Status Code |HTTP Status Message |Description
+|202 | OK | Job accepted.
+|400 | BAD REQUEST | Unknown SymetryML project.
+`{"statusCode":"BAD_REQUEST","statusString":" +
+Cannot Find SYMETRYML id[r2] for Customer id [c1]","values":{}}`
+|=============================
+
+[[kmean-optimize-example]]
+==== Sample Request Response KMeans Optimizer
+
+....
+Request:
+POST url="http://charm:8080/symetry/rest/c1/projects/p1/kmeansOptimize"
+
+Body:
+{
+    "targets":[],
+    "inputAttributes":[],
+    "inputAttributeNames":[],
+    "targetAttributeNames":[],
+    "extraParameters":
+    {
+        "kmeans_k_min":"2",
+        "kmeans_rnd_seed":"42",
+        "kmeans_k_max":"5",
+        "kmeans_max_iterations":"1000"
+    }
+}
+
+
+Response:
+Location: http://charm:8080/symetry/rest/c1/jobs/2
+
+Response once job is finished:
+{
+    "statusCode":"OK",
+    "statusString":"Job is finished",
+    "values":{
+        "KSVSMap":{
+            "values":[
+            {
+                "kmeans_k_min":"2",
+                "kmeans_rnd_seed":"42",
+                "kmeans_5_silhouette":"0.24742236190463987",
+                "kmeans_5_wssse":"24038.895607683746",
+                "kmeans_4_silhouette":"0.2615571675703183",
+                "kmeans_3_wssse":"34178.95949179863",
+                "kmeans_k_max":"5",
+                "kmeans_2_silhouette":"0.24099295660249936",
+                "kmeans_4_wssse":"26852.68838040368",
+                "kmeans_3_silhouette":"0.21947966456276002",
+                "kmeans_max_iterations":"1000",
+                "kmeans_2_wssse":"40316.897273276154"
+            }
+            ]
+        }
+    }
+}
+....
+
 
 [[model-information]]
 === Model Information
@@ -3266,6 +3360,9 @@ GET url="http://charm:8080/symetry/rest/c1/projects/irisTest/models/ldaOptimized
 Response:
 {"statusCode":"OK","statusString":"OK","values":{"modelInfo":{"modelType":"lda","attributeNames":["petal_length","petal_width","sepal_width","petal_length_b1","sepal_lengt_b1","sepal_width_b1","petal_width_b2","sepal_length"],"attributeIndexes":[2,3,1,6,4,5,7,0],"info":{"buildStatus":"\"No Error\"","z0":"18.9666","z1LTz0":"false","z":"\"l0 \u003c- c(3.93801 ,2.43275 ,-8.92229 ,-15.9048 ,0.997005 ,-1.15579 ,-4.66130 ,59.3254 )\n\"","buildTimeNanosec":"6553273","OverallContribution":"4.49040"},"predictInfo":["resZ","res","normZ"],"scoreInfo":["normZ"],"buildTime":54,"modelBuilt":140,"targetNames":["Iris_versicolor"],"targetindexes":[13],"modelId":"ldaOptimized"}}}
 ....
+
+
+
 
 [[model-info-map-key]]
 ==== Model Info Map Key

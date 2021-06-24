@@ -5857,6 +5857,65 @@ Body:
 
 
 
+[[tasks]]
+== Tasks API
+
+Task API allows to create tasks / process. For now
+it can only be used to create SymetryML Kafka stream
+application. For more information on SymetryML Kafka 
+stream application please consult: TBD
+
+
+[[task-create]]
+=== Task Create
+
+This API function creates a Task. Please see <<data-source-encryption>> for information on how to encrypt <<task-info-json>> data structures.
+
+[[task-create-url]]
+==== URL
+....
+POST /symetry/rest/{cid}/tasks/create [Body=TaskInfo (encrypted)]
+....
+[width="100%",cols="<25%,<25%,<50%",options="header",]
+|=================
+|Parameter |Required/Optional? |Description
+|*force* |Optional | if true then will override any pre-existing Task with same id. Default is *false*.
+|=================
+
+
+[[task-create-http-responses]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|=================
+|HTTP Status Code |HTTP Status Message |Description
+|202 |CREATED | Success.
+|409 |CONFLICT | A task with the specified name already exists and the `force` parameter was false.
+|=================
+
+
+[[task-start]]
+=== Task Start
+
+This rest endpoint start a task. 
+
+[[task-start-url]]
+==== URL
+....
+GET /symetry/rest/{cid}/tasks/{tid}/start
+....
+
+
+[[task-start-response]]
+==== HTTP Responses
+
+[width="100%", cols="<25%,<25%,<50%",options="header",]
+|==================================================
+|HTTP Status Code |HTTP Status Message |Description
+|200 |OK |Success.
+|==================================================
+
+
 [[task-stop]]
 === Stop a Start
 
@@ -5975,6 +6034,8 @@ GET /symetry/rest/{cid}/tasks/{tid}
 | *processIsAlive* | Is the underlying process alive?
 | *lastError* | Last error string.
 |=============================
+
+
 
 
 

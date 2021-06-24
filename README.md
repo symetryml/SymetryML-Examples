@@ -16,5 +16,12 @@ It is divided in the following sub folder
 
 # What's New in SymetryML Version 5.4
 
-* TBD
-* TBD
+* Faster AutoSelect functionality
+* Prediction Plot for anomaly detection
+* HIPAA compliance friendly
+	* Web-UI automatic logoff after period of inactivity
+	* Login Splash screen
+	* Too many Authentication failures leads to disabled credential
+* New Clustering algorithms
+* New Task Rest API to control SymetryML Kafka stream application
+

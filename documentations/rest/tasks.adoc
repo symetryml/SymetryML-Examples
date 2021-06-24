@@ -9,7 +9,7 @@ There is a maximum number of task that can be run at the same time. This number 
 SymetryML control parameter. Please consult <<TBD>> for more details on how to set these parameters. The default 
 value for this `sml.task.max` parameter is 4.
 
-Please consult the <<symetryml kafka stream>> application.
+Please consult the <<symetryml kafka stream>> application for details. TBD
 
 [width="100%", cols="<20%,<20%,<20%,<40%",options="header",]
 |=============================

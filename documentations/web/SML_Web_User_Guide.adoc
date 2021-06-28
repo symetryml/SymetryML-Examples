@@ -9,7 +9,7 @@ Copyright © 2020 by Symetry, Inc. +
 14 Pine Street, Ste 6 +
 Morristown, NJ 07960 +
 All Rights Reserved +
-March 30, 2021
+June 28, 2021
 
 [[introduction]]
 == Introduction
@@ -184,7 +184,9 @@ the true label for the record is unknown. Instances which are drastically differ
 ones the model was build with, will yield a higher anomaly score than those which are aligned with what
 the model has seen before.
 
-_Clustering_ models attempt to group your data such that the instances within a particular group are more similar to each other than to their counterparts in other groups. These models are unsupervised and within SymetryML can be built in an online fashion.
+_Clustering_ models attempt to group your data such that the instances within a particular
+group are more similar to each other than to their counterparts in other groups.
+These models are unsupervised and can be built in an online fashion.
 
 [[evaluating-models]]
 === Evaluating Models
@@ -776,13 +778,14 @@ The anomaly models available in Symetry are:
 * Out of Sample PCA - OOSPCA
 * Histogram Based Anomaly - HBA (requires a histogram enabled project)
 
+[[anomaly-plot]]
 ===== Anomaly Plot
 
 Anomaly Plot functionality allows you to visualize the prediction of your anomaly models in a graph.
 
-This can be performed by right clicking on the anomaly model and selecting
-*Anomaly Plot*
-image::media/web/anomaly_plot_0.png[title='Anomaly - Plot', width=50%]
+This can be performed by right clicking on the anomaly model and selecting *Anomaly Plot*
+
+image::media/web/anomaly_plot_0.png[title='Anomaly - Plot', width=25%]
 
 image::media/web/anomaly_plot_1.png[title='Anomaly - Plot Prediction Result', width=50%]
 
@@ -1336,7 +1339,8 @@ image::media/web/km1.png[title='KM Build Model', width=50%]
 ===== Clustering
 
 To build a clustering model a project needs to be created with a specific
-set of parameters. These parameters can be enabled as part of the *Advanced Project Options* on the last page of the project wizard.
+set of parameters.
+These parameters can be enabled as part of the *Advanced Project Options* on the last page of the project wizard.
 
 image::media/web/cluster_0.png[title='Advanced Options - Clustering', width=50%]
 {nbsp}
@@ -1344,12 +1348,12 @@ image::media/web/cluster_0.png[title='Advanced Options - Clustering', width=50%]
 [width="100%", cols="<30%,<30%,<60%",options="header",]
 |=============================
 | Parameter | Required/Optional? | Description
-| *cluster_rnd_seed* | Optional | Set the seed of the randomizer
-| *cluster_features* | Mandatory | This is a string containing the features to use for the clustering algorithm. The feature are colon separated.
-| *cluster_max_iterations* | Optional | Default is *1000*. This control the number of iterations of the kmeans algorithm.
-| *cluster_num_centroids* | Optional | Default is *100*. This parameter control the number of centroid that are kept in real time on the data. Typically this number is much higher than the intended number of cluster - e.g. the target 'k' parameters
-| *cluster_warmup_period* | Optional | Default is *101*. This parameters control how many tuples of data must be seen before the initial real-time cluster will be constructed using the 'cluster_num_centroids' parameter as
-the k number. Once the initial cluster is created it will just be updated in real-time with each new tuple/row of data. Note that *cluster_warmup_period* needs to be greater than *cluster_num_centroids*, e.g. *cluster_num_centroids*=100 and *cluster_warmup_period*=101. If this condition is not meet an error will be raised by the software.
+| *Cluster Seed* | Optional | Set the seed of the randomizer
+| *Cluster Features* | Mandatory | The features to use for the clustering algorithm.
+| *Cluster Max Iterations* | Optional | Default is *1000*. This control the number of iterations of the kmeans algorithm.
+| *Cluster # Centroids* | Optional | Default is *100*. This parameter control the number of centroid that are kept in real time on the data. Typically this number is much higher than the intended number of cluster - e.g. the target 'k' parameters
+| *Cluster Warmup Period* | Optional | Default is *101*. This parameters control how many tuples of data must be seen before the initial real-time cluster will be constructed using the 'cluster_num_centroids' parameter as
+the k number. Once the initial cluster is created it will just be updated in real-time with each new tuple/row of data. Note that *Cluster Warmup Period* needs to be greater than *Cluster # Centroids*, e.g. *Cluster # Centroids*=100 and *Cluster # Centroids*=101. If this condition is not meet an error will be raised by the software.
 |=============================
 
 Once a cluster project is created, building the model is as simple as right click on the *Exploration* icon and selecting the corresponding option.
@@ -1437,7 +1441,9 @@ image::media/web/update_fusion_2.png[title='Update Fusion', width=50%]
 New in symetry 5.4 is the ability to simplify project creation with
 AutoML.
 
-AutoML streamlines various stages of the typical machine learning pipeline. Enabling this feature will automatically filter out redundant features, engineer new ones, and allow the project to focus on a spacific attribute. AutoML is meant as a precursor to  <<model-select>>. Utilizing the two steps in sequence allows the user to quickly build up models with minimal data preprocessing.
+AutoML streamlines various stages of the typical machine learning pipeline. 
+Enabling this feature will automatically filter out redundant features, engineer new ones, and allow the project to focus on a spacific attribute. 
+AutoML is meant as a precursor to  <<model-select>>. Utilizing the two steps in sequence allows the user to quickly build up models with minimal data preprocessing.
 
 image::media/web/automl_0.png[title='Update Fusion', width=50%]
 
@@ -1815,7 +1821,8 @@ image::media/web/prediction_export.png[title='Prediction Export', width=100%]
 [[symetry-web-configurations]]
 ==== Symetry Web Configurations
 
-Certain Symetry Web parameters can be configured by editing the `/opt/symetry/symetry-web.txt` configuration file. Ensure that `-Drtlm.web.db=/opt/symetry/symetry-web.txt` is set in `/opt/jetty/start.ini`.
+Certain Symetry Web parameters can be configured by editing the `/opt/symetry/symetry-web.txt` configuration file. 
+Ensure that `-Drtlm.web.db=/opt/symetry/symetry-web.txt` is set in `/opt/jetty/start.ini`.
 
 [width="100%",cols="<60%,<40%",options="header",]
 |====================================

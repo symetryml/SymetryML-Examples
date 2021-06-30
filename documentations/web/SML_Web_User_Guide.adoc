@@ -969,8 +969,8 @@ image::media/web/spark_ds.png[title='Spark Data Source', width=50%]
 {nbsp} +
 +
 image::media/web/http_ds.png[title='HTTP Data Source', width=50%]
-{nbsp} +
-
+{nbsp}
++
 3. Ensure your data source settings are valid.
 4. Click *Finish* to add the data source.
 +
@@ -1210,32 +1210,32 @@ encoder to your project or select the order of the sequence. Click
 *Next* to continue.
 +
 image::media/web/new_project_start.png[title='New Project', width=50%]
-{nbsp} +
-
+{nbsp}
++
 4.  Select an existing data source or define a new data
 source directly from the project wizard.
 +
 image::media/web/new_project_ds_selection.png[title='New Project Data Selection', width=50%]
-{nbsp} +
-
+{nbsp}
++
 5.  Ensure that your data is valid.
 +
 image::media/web/new_project_data_preview.png[title='New Project Data Preview', width=50%]
-{nbsp} +
-
+{nbsp}
++
 6.  Click **Next**. The type-mapping panel appears.
 7.  On the type-mapping panel, verify the data types for the attributes
 inside the file. You can change the data types to ones that are more
 appropriate. Click *Finish* to start the project-creation task.
 +
 image::media/web/project_type_selection.png[title='Type Selection', width=50%]
-{nbsp} +
-
+{nbsp}
++
 8.  After the project creation completes, the change is shown in the
 project tree.
 +
 image::media/web/project_tree2.png[title='Project Tree', width=25%]
-{nbsp} +
+{nbsp}
 
 For more specialized project types, a user has the option of clicking on the dropdown option
 of the *Create Project* button. This allows one to build one of the following project types:
@@ -1345,7 +1345,7 @@ These parameters can be enabled as part of the *Advanced Project Options* on the
 image::media/web/cluster_0.png[title='Advanced Options - Clustering', width=50%]
 {nbsp}
 
-[width="100%", cols="<30%,<30%,<60%",options="header",]
+[width="100%", cols="<25%,<15%,<60%",options="header",]
 |=============================
 | Parameter | Required/Optional? | Description
 | *Cluster Seed* | Optional | Set the seed of the randomizer
@@ -1373,23 +1373,23 @@ The above process assumes that the correct number of clusters is known ahead of 
 +
 image::media/web/cluster_optimize_0.png[title='Optimize K-Means', width=50%]
 {nbsp}
-
++
 2. Select the appropriate range of clusters to evaluate.
 +
 image::media/web/cluster_optimize_1.png[title='Optimize K-Means Parameters', width=50%]
 {nbsp}
-
++
 3. You will be notified of the results once the *Optimize K-Means Job* is complete.
 +
 image::media/web/cluster_optimize_2.png[title='Optimize K-Means Job Done', width=50%]
 {nbsp}
-
++
 4. The result of the optimization process is a set of two graphics which allow
 you to compare the *WSSSE* and the *Silhoutte Scores* across different models.
 +
 image::media/web/cluster_optimize_3.png[title='Optimize K-Means Result', width=50%]
 {nbsp}
-
++
 5. You can complete the process by choosing the optimal number of clusters and 
 clicking on the *Build Model* button.
 
@@ -1466,11 +1466,11 @@ time. For example, you can use this feature with an output of a weekly
 ETL process that constantly updates the file for use within SymetryML.
 
 1.  Right-click the *Exploration* node of your project tree.
-2.  Click *Add Data.*
+2.  Click *Add Data.* 
 +
 image::media/web/sml_add_data.png[title='Project Tree Add Data', width=25%]
-{nbsp} +
-
+{nbsp}
++
 3.  Specify whether you are using an existing or new data source, and
 then click *Next* to continue.
 4.  Inspect your data to ensure it was read properly. Click *Next* to
@@ -1614,8 +1614,7 @@ image::media/web/meta_model_create.png[title="Create Model - Partition Project",
 NOTE: Partitioned projects allow you to create two additional types of models:
 MetaLDA and MetaQDA. For more information see
 <<using-classification-models>>
-
-
++
 2. Assign a new name to the model. Certain models allow for additional
 options relating to feature selection and model
 reduction . Furthermore, because these models rely heavily on
@@ -1625,13 +1624,12 @@ operations via Reciprocal Condition Number Threshold. Note, this feature is for 
 Click *Build Model* to continue.
 +
 image::media/web/model_type_classification.png[title='Model-Type Selection (Classification and Regression)', width=50%]
-{nbsp} +
+{nbsp}
 +
 image::media/web/hmm_model_role_selection.png[title='Model-Role Selection (Sequence)', width=50%]
-{nbsp} +
-
-4.  After completing the model-building process, double click on the model icon to see
-information about your new model.
+{nbsp}
++
+4.  After completing the model-building process, double click on the model icon to see information about your new model.
 
 // ==== Creating New Models - Exploration
 // The *Exploration Panel* provides an alternative way of creating models
@@ -1801,8 +1799,8 @@ for predictions against a file.
 1.  Right-click the model node, and then click *Predict*.
 +
 image::media/web/predict_preview.png[title='Predict', width=25%]
-{nbsp} +
-
+{nbsp}
++
 2.  Specify the input data source, and then click *Next* to continue.
 3.  Specify the output data source, which is the location where you want
 your predictions saved. Click *Next* to continue. A preview of the input

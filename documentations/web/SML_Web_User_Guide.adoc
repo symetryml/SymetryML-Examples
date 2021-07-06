@@ -1317,7 +1317,7 @@ To enable Kaplan-Meier model, the corresponding option needs to be selected in *
 
 The required fields when selecting this option are : *Time Column*, *Event Column* and *Group Column*
 
-image::media/web/p_advanced_km.png[title='Advanced Options - RF', width=50%]
+image::media/web/p_advanced_km.png[title='Advanced Options - KM', width=50%]
 {nbsp}
 
 Clicking *Finish* will start the project learn and fit the KM model.

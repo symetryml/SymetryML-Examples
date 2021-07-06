@@ -43,7 +43,7 @@ SymetryML is a Java software that relies on certain native library (.so files) t
 
 As mentioned in the <<SML_Installation_Guide.adoc#>> once you decompress the `symetry.tar.gz` archive into `/opt/symetry`, you will install the the necessary libraries to use NVIDIA gpus into the `/opt/symetry/nativelib` folder. Your `/opt/symetry/nativelib` folder should look like that:
 [source, bash]
-....
+----
 ├── nativelib
 │   ├── libiomp5.so
 │   ├── libmkl_avx.so
@@ -54,14 +54,14 @@ As mentioned in the <<SML_Installation_Guide.adoc#>> once you decompress the `sy
 │   ├── libmkl_intel_thread.so
 │   ├── libmkl_rt.so
 │   └── libsym-gpu.so
-....
+----
 
 Additionally To make SymetryML works with GPU perform the following:
 
 1. Download CUDA 10 from https://developer.nvidia.com/cuda-toolkit[NVIDIA]
 2. Install CUDA, and then use the `nvidia-smi` command to verify that CUDA is working. Example for Centos 7: 
-+
-[source%autofit, shell]
+
+[source, shell]
 ----
 # download cuda
 wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run
@@ -75,8 +75,8 @@ nvdia-smi
 ----
 
 3. After a sucessful cuda installation `nvidia-smi` should output something like: 
-+
-[source%autofit, shell]
+
+[source, shell]
 ----
 [root@symetry ~]# nvidia-smi
 Tue Mar 31 17:39:09 2020
@@ -105,7 +105,7 @@ Tue Mar 31 17:39:09 2020
 ----
 
 4. Be sure that `jetty` user `LD_LIBRARY_PATH` is set correctly.
-+
+
 [source, shell]
 ....
 # edit /home/jetty/.bashrc

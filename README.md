@@ -1,8 +1,8 @@
 # symetryMLv5.4
 
-# About the Symetry Documentation github
+# About the Symetry tutorials and examples github
 
-This github repository containstutorials and code examples in order to help start using the SymetryML machine learning software.
+This github repository contains tutorials and code examples in order to help start using the SymetryML machine learning software.
 
 It is divided in the following sub folder
 

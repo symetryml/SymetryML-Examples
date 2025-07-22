@@ -1,4 +1,4 @@
-# symetryML version 6.x
+# SymetryML version 6.x
 
 # About the Symetry tutorials and examples github
 

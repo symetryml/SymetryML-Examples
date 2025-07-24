@@ -2,9 +2,9 @@
 
 /**
  *
- * $SPARK_HOME/bin/spark-shell --master local[1] --jars /opt/symetry/lib/sym-spark-assembly.jar 
+ * $SPARKHOME/bin/spark-shell --master local[1] --jars /opt/symetry/lib/sym-spark-assembly.jar 
  *
- *  <$SPARK_HOME is where the Apache Spark is located, usually in /opt/spark>
+ *  <$SPARKHOME is where the Apache Spark is located, usually in /opt/spark>
  */
 
 import com.rtlm.constants.CoreConstants
@@ -80,7 +80,7 @@ object IrisExample {
     df.addTuple(d)
 
     val res = p.predict(df,"irisLDAModel")
-    println("Predicted Response:" + res(0)). // should be 0
+    println("Predicted Response:" + res(0)) // should be 0
 
     // another prediction test should return 1
     df.clear()
@@ -98,8 +98,9 @@ object IrisExample {
     println("RunIrisExample done")
   }
 }
-// *******************************
+
 // ******** PLEASE RUN: *****************
-/* irisExample.run() //or irisExample.run( << an string containing 
-    the the path of the iris data >> ) */
+// IrisExample.run() 
+// OR
+// IrisExample.run( << an string containing the the path of the iris data >> ) 
 

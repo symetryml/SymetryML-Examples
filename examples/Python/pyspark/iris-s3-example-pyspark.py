@@ -1,14 +1,24 @@
 # iris-s3-example-pyspark.py
 #
-# Ran with Spark 4.0.0, Python 3.9.7, Java 17
+# Ran with 
+#           Spark 4.0.0, 
+#           Hadoop 3.3.6, 
+#           Python 3.9.7, 
+#           Java 17
+
+# export AWS_ACCESS_KEY="YOUR AWS ACCESS KEY"
+# export AWS_SECRET_KEY="YOUR AWS SECRET KEY"
 # export SPARK_HOME=/opt/spark-4.0.0-bin-hadoop3
 # export PYTHONPATH=/opt/symetry/python
 # export PYSPARK_DRIVER_PYTHON="$HOME/uv-env/bin/python"
 # export PYSPARK_DRIVER_PYTHON_OPTS=
 # export JAVA_HOME=$(/usr/libexec/java_home -v 17)
-# export AWS_ACCESS_KEY="$aws_access_key_1"
-# export AWS_SECRET_KEY="$aws_secret_key_1"
-# $SPARK_HOME/bin/spark-submit --master local[1] --packages org.apache.hadoop:hadoop-aws:3.3.6,com.amazonaws:aws-java-sdk-bundle:1.11.1026 --jars "/opt/symetry/lib/sym-spark-assembly-Scala_2_13.jar,/opt/spark-4.0.0-bin-hadoop3/jars/scala-library-2.13.16.jar" --driver-java-options -Dsym.lic.loc=/opt/symetry/sym.lic iris-s3-example-pyspark.py
+# 
+# cd SymetryML-Examples/examples/Python/pyspark/
+# $SPARK_HOME/bin/spark-submit --master local[2] \
+#  --packages org.apache.hadoop:hadoop-aws:3.3.6,com.amazonaws:aws-java-sdk-bundle:1.11.1026 \
+#  --jars "/opt/symetry/lib/sym-spark-assembly-Scala_2_13.jar" \
+#  --driver-java-options -Dsym.lic.loc=/opt/symetry/sym.lic iris-s3-example-pyspark.py
 
 import os
 import sys
@@ -18,7 +28,7 @@ from pyspark.context import SparkConf
 from pyspark.sql import SQLContext, HiveContext
 from pyspark.storagelevel import StorageLevel
 
-print("amazonExample.py start")
+print("iris-s3-example-pyspark.py start")
 
 conf = SparkConf()
 conf.setAppName('amazonExample')
@@ -51,7 +61,10 @@ sc._jsc.hadoopConfiguration().set("fs.s3a.connection.keepalive.time", "60000")
 sc._jsc.hadoopConfiguration().set("fs.s3a.threads.keepalivetime", "60000")
 sc._jsc.hadoopConfiguration().set("fs.s3a.multipart.purge.age", "86400")
 
+
+# replace with your own file on s3.
 myrdd  = sc.textFile('s3a://sml-oregon/datasets/susy/SUSYmini.csv')
+
 # Convert pyspark RDD to JavaRDD
 # _to_java_object_rdd
 myJavaRdd = myrdd._jrdd
@@ -142,4 +155,4 @@ p.deleteModel("mySvmModel")
 # STEP 7) Tou can delete the Project to release the used memory
 p.deleteProject()
 
-print("amazonExample.py end")
+print("iris-s3-example-pyspark.py end")

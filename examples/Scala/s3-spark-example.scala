@@ -16,9 +16,7 @@ package com.sml.examples.scala
  * echo -e "$SPARK_SHELL_CMD" | $SPARK_HOME/bin/spark-shell --master local[*] --jars $APP_JAR --driver-java-options -Dsym.lic.loc=/opt/symetry/sym.lic
  *
  */
-/**
- * Created by neil on 15-11-19.
- */
+
 
 import com.rtlm.constants.CoreConstants._
 import com.rtlm.json.DataFrame

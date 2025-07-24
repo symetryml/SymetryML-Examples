@@ -9,11 +9,16 @@ package com.sml.examples.scala
  *
  * export SPARK_HOME=/opt/spark-3.0.2-bin-hadoop3.2
  * export JAVA_HOME=$(/usr/libexec/java_home -v 11)
- * export APP_JAR=/opt/symetry/lib/sym-spark-assembly-Scala_2_12.jar,/SML-Dev/spark-support/spark3.0.2/hadoop3.2/extra-jars/aws-java-sdk-bundle-1.11.375.jar,/SML-Dev/spark-support/spark3.0.2/hadoop3.2/extra-jars/hadoop-aws-3.2.0.jar
+ * export APP_JAR=/opt/symetry/lib/sym-spark-assembly-Scala_2_12.jar
  * export AWS_ACCESS_KEY="$aws_access_key_1"
  * export AWS_SECRET_KEY="$aws_secret_key_1"
  * SPARK_SHELL_CMD="com.sml.examples.scala.amazonMRExample.run(sc)"
- * echo -e "$SPARK_SHELL_CMD" | $SPARK_HOME/bin/spark-shell --master local[*] --jars $APP_JAR --driver-java-options -Dsym.lic.loc=/opt/symetry/sym.lic
+ 
+ echo -e "$SPARK_SHELL_CMD" | $SPARK_HOME/bin/spark-shell --master local[*] --jars $APP_JAR --driver-java-options -Dsym.lic.loc=/opt/symetry/sym.lic \
+   --packages \
+    com.amazonaws:aws-java-sdk-bundle:1.11.375,\
+    org.apache.hadoop:hadoop-aws:3.2.0
+ 
  *
  */
 

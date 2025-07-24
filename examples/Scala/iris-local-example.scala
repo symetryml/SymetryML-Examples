@@ -1,8 +1,14 @@
-
-
 /**
+ * This code was run with Spark 2.4.6 with hadoop 2.7 (spark-2.4.6-bin-hadoop2.7)
+
+ * Please make sure that the following jar are present in SPARKHOME/jars
+ * aws-java-sdk-1.7.4.jar
+ * hadoop-aws-2.7.3.jar
+ * jets3t-0.9.4.jar
  *
- * $SPARKHOME/bin/spark-shell --master local[1] --jars /opt/symetry/lib/sym-spark-assembly.jar 
+ * If using a different version of spark change hadoop version accordingly.
+ *
+ * $SPARKHOME/bin/spark-shell --master 'local[1]' --jars /opt/symetry/lib/sym-spark-assembly.jar 
  *
  *  <$SPARKHOME is where the Apache Spark is located, usually in /opt/spark>
  */

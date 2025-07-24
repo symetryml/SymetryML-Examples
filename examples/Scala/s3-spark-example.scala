@@ -2,22 +2,25 @@ package com.sml.examples.scala
 
 /**
  * To run via spark-shell locally, for example:
- * Spark 3.0.2, Hadoop 3.2, Scala 2.12.10, Java 11
+ *      Spark 3.0.2, 
+ *      Hadoop 3.2, 
+ *      Scala 2.12.10, 
+ *      Java 11
  *
- * Build sym-spark-assembly-Scala_2_12.jar at ScalaProjects/sym-shell:
- * ./gradlew clean shadowJar -PuseSpark3
+ * Make sure to use sym spark assembly build for Scala 12: sym-spark-assembly-Scala_2_12.jar
  *
- * export SPARK_HOME=/opt/spark-3.0.2-bin-hadoop3.2
- * export JAVA_HOME=$(/usr/libexec/java_home -v 11)
- * export APP_JAR=/opt/symetry/lib/sym-spark-assembly-Scala_2_12.jar
- * export AWS_ACCESS_KEY="$aws_access_key_1"
- * export AWS_SECRET_KEY="$aws_secret_key_1"
+ * Exemple:
 
- 
- $SPARK_HOME/bin/spark-shell --master 'local[2]' --jars $APP_JAR --driver-java-options -Dsym.lic.loc=/opt/symetry/sym.lic \
-   --packages \
-    com.amazonaws:aws-java-sdk-bundle:1.11.375,\
-    org.apache.hadoop:hadoop-aws:3.2.0
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home
+
+export AWS_ACCESS_KEY=your aws access key
+export AWS_SECRET_KEY=your aws secret key
+
+export SPARKHOME=path to spark-3.0.2-bin-hadoop3.2 
+
+$SPARKHOME/bin/spark-shell --master 'local[2]' \
+--packages org.apache.hadoop:hadoop-aws:3.2.0,com.amazonaws:aws-java-sdk-bundle:1.11.375 \
+--jars "/opt/symetry/lib/sym-spark-assembly-Scala_2_12.jar" --driver-java-options -Dsym.lic.loc=/opt/symetry/sym.lic
  
  *
  */
@@ -168,4 +171,4 @@ object amazonMRExample {
 
 // **************************************
 // ******** PLEASE RUN: *****************
-// amazonExample.run(sc)
+// amazonMRExample.run(sc)

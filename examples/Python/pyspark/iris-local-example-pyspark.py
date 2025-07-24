@@ -1,10 +1,27 @@
+# iris-local-example-pyspark.py
+#
+# Ran with 
+#       Spark 2.4.6, 
+#       Python 3.7.4
+#       Java 11
+# 
+# Setup:
+#
+# export SPARK_HOME=/opt/spark-2.4.6
+# export PYTHONPATH=/opt/symetry/python
+# export PYSPARK_DRIVER_PYTHON="$HOME/py37/bin/python"
+# export PYSPARK_DRIVER_PYTHON_OPTS=
+# export JAVA_HOME=$(/usr/libexec/java_home -v 11)
+# 
+# $SPARK_HOME/bin/spark-submit --master local[1] --jars "/opt/symetry/lib/sym-spark-assembly-Scala_2_11.jar" --driver-java-options -Dsym.lic.loc=/opt/symetry/sym.lic iris-local-example-pyspark.py
+
 from pyspark import SparkContext
 from pyspark import SparkConf
 import numpy as np
 from pandas import read_csv
 from SMLProjectUtil import update_sml_project
 
-print("pyspark-irisExample.py start")
+print("iris-local-example-pyspark.py start")
 
 # Comment out these lines if this script is being run interactively through pyspark shell. The shell provides the SparkContext.
 conf = SparkConf()
@@ -22,7 +39,7 @@ projectType = 0 # cpu project
 p = sml.PySparkShellSymetryProject("c1", "pysparkIrisExamplePrj", projectType)
 
 # Learn the Iris dataset file incrementally by chunks of lines.
-IRIS_FILE = "../../data/irisFiles/Iris_data.csv"
+IRIS_FILE = "../../../data/Iris_data.csv"
 LINE_CHUNK = 50
 lineCount = 0
 attrNames = None
@@ -133,5 +150,5 @@ p.deleteModel("irisLDAModel")
 # Delete the Project
 p.deleteProject()
 
-print("pyspark-irisExample.py end")
+print("iris-local-example-pyspark.py end")
 
